@@ -3,12 +3,15 @@ package com.light.light;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ToggleButton;
+import android.Manifest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +27,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tButton = (ToggleButton) findViewById(R.id.btnSwitch);
 
-        // int permissionCheck = ContextCompat.checkSelfPermission(android.permission.CAMERA);
+        //permission check
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+            }
+        }
 
         try {
             //To check camera availability
@@ -71,12 +79,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onStop() {
-        super.onStop();
         if (camera != null) {
             camera.release();
             camera = null;
         }
-        super.onPause();
+        super.onStop();
     }
 
 
