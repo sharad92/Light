@@ -16,7 +16,7 @@ import android.Manifest;
 public class MainActivity extends AppCompatActivity {
 
     ToggleButton tButton;
-    static Camera camera = null;
+    Camera camera;
     Camera.Parameters para;
     boolean isFlash = false;
     boolean isOn = false;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                             camera.setParameters(para);
                             camera.startPreview();
                             isOn = true;
-                        } else {
+                        }else {
                             para.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
                             camera.setParameters(para);
                             camera.stopPreview();
@@ -82,13 +82,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onStop() {
+        super.onStop();
         if (camera != null) {
             camera.release();
             camera = null;
         }
-        super.onStop();
     }
-
 
 }
 
